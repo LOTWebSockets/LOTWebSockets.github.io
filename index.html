@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOTWebSockets - Living Off The WebSockets</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #000000, #1e1e1e); /* Black to dark gray gradient */
+            color: #ffffff; /* White text color */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Styling */
+        nav {
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.9); /* Black background for nav */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            margin: 0 20px;
+            color: #00ccff; /* Bright blue color */
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #66ffff; /* Lighter blue on hover */
+        }
+
+        /* Header Box Styling */
+        .header-box {
+            display: flex;
+            align-items: center;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #222; /* Dark background */
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.6);
+            color: #ffffff; /* White text color */
+        }
+
+        .header-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            margin-right: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-box img:hover {
+            transform: scale(1.05);
+        }
+
+        .header-box h2 {
+            font-size: 2.2rem;
+            color: #00ccff; /* Bright blue color */
+            margin-bottom: 10px;
+        }
+
+        .header-box h4 {
+            color: #bbbbbb; /* Gray color for subheadings */
+            font-size: 1.1rem;
+            margin: 5px 0;
+        }
+
+        .header-box p {
+            color: #bbbbbb; /* Gray color for paragraphs */
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Search Box */
+        #searchBox {
+            padding: 12px;
+            width: 50%;
+            max-width: 600px;
+            margin: 30px 0;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 8px;
+            background: #333; /* Darker background for input */
+            color: #ffffff; /* White text */
+            outline: none;
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease;
+        }
+
+        #searchBox:focus {
+            box-shadow: 0px 0px 10px #00ccff; /* Blue focus shadow */
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 900px;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background: #333; /* Dark background for table */
+            color: #ffffff; /* White text color */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #444; /* Dark border */
+        }
+
+        th {
+            background: #444; /* Dark gray for header */
+            color: #00ccff; /* Bright blue color for header text */
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        tr:hover {
+            background-color: #3a3a3a; /* Darker background on hover */
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #999; /* Light gray for footer */
+        }
+
+        footer a {
+            color: #00ccff; /* Bright blue color for footer links */
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #66ffff; /* Lighter blue on hover */
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .header-box {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .header-box img {
+                margin: 0 0 20px 0;
+            }
+
+            #searchBox {
+                width: 80%;
+            }
+        }
+    </style>
+    <script>
+        function filtersockets() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            const rows = document.querySelectorAll('#sockets tbody tr');
+            
+            rows.forEach(row => {
+                const commandName = row.cells[0].textContent.toLowerCase();
+                const command = row.cells[1].textContent.toLowerCase();
+                const type = row.cells[2].textContent.toLowerCase();
+                
+                if (commandName.includes(query) || command.includes(query) || type.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+</nav>
+
+<div class="header-box">
+    <a href="https://github.com/LOTWebSockets/LOTWebSockets.github.io/blob/main/README.md">
+        <img src="assets/logo.jpg" alt="Living Off The WebHooks" width="800px">
+    </a>
+    <div>
+        <h2>Living Off The WebSockets</h2>
+        <h4>Abusing WebSockets for Data Exfiltration & C2 Communications</h4>
+        <p>
+            <strong>LOTWebSockets</strong> is a community-driven project documenting websockets that may be exploited for data exfiltration and C2 communications. 
+            <a href="https://github.com/LOTWebSockets/LOTWebSockets.github.io/tree/main" style="color: #00ccff;">Contribution guide</a>.
+        </p>
+    </div>
+</div>
+
+<input type="text" id="searchBox" placeholder="Search for websockets..." onkeyup="filtersockets()">
+
+<table id="sockets">
+    <thead>
+        <tr>
+            <th>Websocket Name</th>
+            <th>URL</th>
+            <th>Type</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>Socket Name</td>
+            <td><code>URL here</code></td>
+            <td>Type</td>
+            <td>Reference URL</td>
+        </tr>
+
+    </tbody>
+</table>
+
+<footer>
+    Created by <a href="https://www.linkedin.com/in/kamransaifullah/" target="_blank">Kamran Saifullah</a> & <a href="https://www.linkedin.com/in/strcam/" target="_blank">Cam Coller</a>
+</footer>
+
+</body>
+</html>
