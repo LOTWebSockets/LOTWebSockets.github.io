@@ -2,7 +2,7 @@
 
 <p align="center"><img src="./assets/logo.jpg"></p>
 
-LOTWebHooks is a community-driven project documenting webhooks that may be exploited for data exfiltration and C2 communications etc.
+LOTWebSockets is a community-driven project documenting websockets that may be exploited for data exfiltration and C2 communications etc.
 
 # Contributions
 
