@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LOTWebSockets - Living Off The WebSockets</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <style>
@@ -35,7 +35,7 @@
         }
 
         nav a {
-            margin: 0 20px;
+            margin: 0 10px;
             color: #00ccff; /* Bright blue color */
             text-decoration: none;
             font-size: 1rem;
@@ -93,7 +93,7 @@
         /* Search Box */
         #searchBox {
             padding: 12px;
-            width: 50%;
+            width: 80%;
             max-width: 600px;
             margin: 30px 0;
             border: 1px solid #444; /* Dark border */
@@ -111,7 +111,7 @@
 
         /* Table Styling */
         table {
-            width: 90%;
+            width: 100%;
             max-width: 900px;
             margin: 20px 0;
             border-collapse: collapse;
@@ -169,7 +169,35 @@
             }
 
             #searchBox {
-                width: 80%;
+                width: 90%;
+            }
+
+            nav a {
+                margin: 0 5px;
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .header-box h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-box h2 {
+                font-size: 1.5rem;
+            }
+
+            .header-box h4, .header-box p {
+                font-size: 0.9rem;
+            }
+
+            #searchBox {
+                width: 100%;
             }
         }
     </style>
