@@ -14,4 +14,3 @@ LOTWebSockets is a community-driven project documenting websockets that may be e
 # Get In Touch
 
 - Kamran Saifullah - https://linkedin.com/in/kamransaifullah
-- Cameron Coller - https://www.linkedin.com/in/strcam/
