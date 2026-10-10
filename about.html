@@ -180,6 +180,10 @@
             height: 20px;
             display: block;
         }
+        .badges-row a:not(.csv-button) {
+            display: inline-flex;
+            line-height: 0;
+        }
         .csv-button {
             display: inline-flex;
             align-items: center;
@@ -276,6 +280,7 @@
 <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
+    <a href="contributors.html">Contributors</a>
 </nav>
 
 <div class="header-box">
@@ -295,7 +300,7 @@
 <div class="badges-row">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/LOTWebSockets/LOTWebSockets.github.io/main/data/badge.json" alt="Entry count">
     <img src="https://img.shields.io/github/last-commit/LOTWebSockets/LOTWebSockets.github.io?label=last%20updated&color=00ccff" alt="Last updated">
-    <img src="https://img.shields.io/github/contributors/LOTWebSockets/LOTWebSockets.github.io?color=00ccff" alt="Contributors">
+    <a href="contributors.html" title="View contributors"><img src="https://img.shields.io/github/contributors/LOTWebSockets/LOTWebSockets.github.io?color=00ccff" alt="Contributors"></a>
     <a class="csv-button" href="data/websockets.csv" download>&#8681; Download CSV</a>
 </div>
 
