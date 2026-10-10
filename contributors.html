@@ -77,6 +77,23 @@
             transition: color 0.25s ease;
         }
 
+        nav a.github-star-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid rgba(0, 204, 255, 0.45);
+            border-radius: 6px;
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        nav a.github-star-link:hover,
+        nav a.github-star-link:focus-visible {
+            color: #66ffff;
+            border-color: #66ffff;
+            background: rgba(0, 204, 255, 0.18);
+        }
+
         nav a:hover, nav a.active { color: #66ffff; }
 
         .page {
@@ -436,6 +453,7 @@
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="contributors.html" class="active">Contributors</a>
+    <a class="github-star-link" href="https://github.com/LOTWebSockets/LOTWebSockets.github.io" target="_blank" rel="noopener noreferrer" aria-label="Star LOTWebSockets on GitHub">★ Star on GitHub</a>
 </nav>
 
 <main class="page">
