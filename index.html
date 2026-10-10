@@ -167,6 +167,36 @@
         .status-unofficial { background: rgba(0, 150, 255, 0.15); color: #5bb8ff; border: 1px solid rgba(0,150,255,0.4); }
         .status-note { background: rgba(255,255,255,0.08); color: #999; border: 1px solid #444; }
 
+        /* Badges / buttons row */
+        .badges-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin: -20px 0 10px;
+        }
+        .badges-row img {
+            height: 20px;
+            display: block;
+        }
+        .csv-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #00ccff;
+            color: #000000;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+        .csv-button:hover {
+            background: #66ffff;
+        }
+
         /* Footer Styling */
         footer {
             text-align: center;
@@ -260,6 +290,13 @@
             <a href="https://github.com/LOTWebSockets/LOTWebSockets.github.io/tree/main" style="color: #00ccff;">Contribution guide</a>.
         </p>
     </div>
+</div>
+
+<div class="badges-row">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/LOTWebSockets/LOTWebSockets.github.io/main/data/badge.json" alt="Entry count">
+    <img src="https://img.shields.io/github/last-commit/LOTWebSockets/LOTWebSockets.github.io?label=last%20updated&color=00ccff" alt="Last updated">
+    <img src="https://img.shields.io/github/contributors/LOTWebSockets/LOTWebSockets.github.io?color=00ccff" alt="Contributors">
+    <a class="csv-button" href="data/websockets.csv" download>&#8681; Download CSV</a>
 </div>
 
 <input type="text" id="searchBox" placeholder="Search for websockets..." onkeyup="filtersockets()">
