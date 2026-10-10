@@ -9,6 +9,8 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "scripts/generate_csv.py"
+      - ".github/workflows/update-csv.yml"
   workflow_dispatch: {}
 
 permissions:
