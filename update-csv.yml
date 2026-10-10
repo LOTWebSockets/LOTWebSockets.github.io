@@ -1,0 +1,41 @@
+name: Update CSV
+
+# Re-generate data/websockets.csv and data/badge.json from index.html
+# every time index.html changes on main, so contributors never have to
+# touch the CSV by hand.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4
+
+      - name: Generate CSV + badge
+        run: python3 scripts/generate_csv.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/websockets.csv data/badge.json
+          git diff --staged --quiet || git commit -m "chore: auto-update CSV and badge [skip ci]"
+          git push
