@@ -806,6 +806,18 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">WinHTTP WebSocket API (<code>WinHttpWebSocketCompleteUpgrade</code>)</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Native Windows API, no dependencies; imports of <code>WinHttpWebSocket*</code> in unsigned binaries are a useful hunting pivot <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Deno / Bun / Node.js 22+ (global <code>WebSocket</code>)</td>
+            <td class="endpoint-cell"></td>
+            <td class="abuse-cell">Single-binary JS runtimes with a built-in WebSocket client, no npm install needed; Node 22 ships a global <code>WebSocket</code> <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">curl ≥8.10 (experimental <code>--ws</code>)</td>
             <td class="endpoint-cell"></td>
             <td class="abuse-cell">Scriptable WS from LOLBin <span class="dir-tag">(INT)</span></td>
@@ -816,6 +828,36 @@
             <td class="endpoint-cell"></td>
             <td class="abuse-cell">Injected page/tab opens persistent <code>wss://</code>; user-side exfil without malware <span class="dir-tag">(INT)</span></td>
             <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Chrome DevTools Protocol (remote debugging)</td>
+            <td class="endpoint-cell"><code>ws://127.0.0.1:9222/devtools/browser/{id}</code></td>
+            <td class="abuse-cell">Infostealers relaunch Chrome/Edge with <code>--remote-debugging-port</code> and dump decrypted cookies, bypassing App-Bound Encryption; also used for session hijacking and injection <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Node.js / Electron inspector</td>
+            <td class="endpoint-cell"><code>ws://127.0.0.1:9229/{uuid}</code></td>
+            <td class="abuse-cell"><code>--inspect</code> or <code>SIGUSR1</code> on a signed Electron app = code execution inside a trusted process (persistence, defence evasion) <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Firefox Remote Agent (WebDriver BiDi)</td>
+            <td class="endpoint-cell"><code>ws://127.0.0.1:{port}/session</code></td>
+            <td class="abuse-cell"><code>--remote-debugging-port</code> on Firefox exposes BiDi; same cookie and session-theft model as CDP <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Localhost WebSocket servers reachable from web pages (CSWSH)</td>
+            <td class="endpoint-cell"><code>ws://127.0.0.1:{port}/</code></td>
+            <td class="abuse-cell">Browsers allow pages to open WebSockets to localhost; servers without Origin checks are driven by any visited site, e.g. CVE-2025-52882 (IDE extension), CVE-2018-14732 (webpack-dev-server) <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">OBS WebSocket</td>
+            <td class="endpoint-cell"><code>ws://{host}:4455</code></td>
+            <td class="abuse-cell">Built into OBS 28+: remote scene, screenshot, recording and stream control = screen-capture exfil if exposed or weakly protected <span class="dir-tag">(INT / EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
         </tr>
         <tr>
             <td class="name-cell">SocketsBay</td>
