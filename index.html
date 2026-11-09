@@ -770,6 +770,60 @@
             <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
         <tr>
+            <td class="name-cell">BeEF (Browser Exploitation Framework)</td>
+            <td class="endpoint-cell"><code>ws://{beef}:61985, wss://{beef}:61986</code></td>
+            <td class="abuse-cell">Hooked browsers kept on a WebSocket channel for low-latency command modules <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">CursedChrome</td>
+            <td class="endpoint-cell"><code>wss://{c2}:4343</code></td>
+            <td class="abuse-cell">Malicious extension implant: victim browser becomes an HTTP proxy that rides the user's live sessions <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">SparkRAT</td>
+            <td class="endpoint-cell"><code>ws(s)://{c2}:{port}/ (default 8000)</code></td>
+            <td class="abuse-cell">Open-source Go RAT with WebSocket C2 used by DragonSpark against East Asian targets (SentinelLabs); cross-platform including macOS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">OtterCookie (Contagious Interview, DPRK)</td>
+            <td class="endpoint-cell"><code>ws://{c2}:{port}/ (Socket.IO)</code></td>
+            <td class="abuse-cell">Node.js backdoor and stealer delivered via fake job interviews and npm packages; Socket.IO C2 for commands <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Chaes v4 (Chae$ 4.1)</td>
+            <td class="endpoint-cell"><code>wss://{c2}/</code></td>
+            <td class="abuse-cell">Python banking stealer: switched module-to-C2 traffic from HTTP to WebSockets and drives Chrome via its own DevTools Protocol client (Morphisec) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">KEYPLUG (APT41)</td>
+            <td class="endpoint-cell"><code>wss://{cloudflare-edge-ip}/</code></td>
+            <td class="abuse-cell">Modular backdoor supporting HTTP, TCP, KCP and WSS; Windows variant reaches C2 over WSS via Cloudflare edge IPs (Yoroi, MITRE S1051) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Magecart WebSocket skimmers</td>
+            <td class="endpoint-cell"><code>wss://{lookalike-domain}/...</code></td>
+            <td class="abuse-cell">Checkout skimmers load their payload and exfiltrate card data over WebSocket to dodge HTTP-centric monitoring (2020 onwards; cside 2024, Source Defense 2025) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">AiTM phishing kits (Mamba 2FA and similar)</td>
+            <td class="endpoint-cell"><code>wss://{relay}/socket.io/</code></td>
+            <td class="abuse-cell">Phishing page relays credentials and MFA codes to the attacker backend in real time over Socket.IO (Sekoia) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Browser cryptojacking (Coinhive [defunct], stratum-over-WS proxies)</td>
+            <td class="endpoint-cell"><code>wss://{proxy}/proxy</code></td>
+            <td class="abuse-cell">In-page WASM miners stream work over WebSocket to a pool proxy; Coinhive shut down in 2019, but forks and self-hosted proxies persist <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (historical)</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Browser-based agents (Mythic Tyche, XSS→WSS C2)</td>
             <td class="endpoint-cell"></td>
             <td class="abuse-cell">Injected JS opens <code>wss://</code> from victim browser <span class="dir-tag">(EXT)</span></td>
