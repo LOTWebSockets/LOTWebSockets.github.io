@@ -326,6 +326,54 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">AWS Systems Manager (SSM) Session Manager</td>
+            <td class="endpoint-cell"><code>wss://ssmmessages.{region}.amazonaws.com/v1/data-channel/{session-id}</code></td>
+            <td class="abuse-cell">SSM agent re-registered (hybrid activation) to an attacker AWS account, or a second agent run alongside the legitimate one = signed, allow-listed RAT on <code>amazonaws.com</code> (Mitiga, 2023) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Google Cloud IAP TCP forwarding</td>
+            <td class="endpoint-cell"><code>wss://tunnel.cloudproxy.app/v4/connect</code></td>
+            <td class="abuse-cell"><code>gcloud compute start-iap-tunnel</code> tunnels TCP (SSH/RDP/DBs) into a VPC over WebSocket; stolen GCP credentials = inbound pivot through a Google domain <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Azure Relay (Hybrid Connections) / Service Bus &amp; Event Hubs over WS</td>
+            <td class="endpoint-cell"><code>wss://{namespace}.servicebus.windows.net/$hc/{path}</code></td>
+            <td class="abuse-cell">Pure WebSocket rendezvous relay: an internal listener dials out, the operator connects in; AMQP-over-WebSocket on 443 for Service Bus/Event Hubs = exfil to <code>windows.net</code> <span class="dir-tag">(INT→EXT / EXT→INT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">PaaS WebSocket hosting (Azure App Service, Cloud Run, Deno Deploy, Fly.io, Render, Railway, Heroku)</td>
+            <td class="endpoint-cell"><code>wss://{app}.azurewebsites.net, wss://{svc}.run.app, wss://{app}.deno.dev, wss://{app}.fly.dev</code></td>
+            <td class="abuse-cell">Free or cheap WebSocket servers on reputable shared domains; same idea as Cloudflare Workers <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">CDN-fronted WebSockets (Cloudflare, CloudFront, Azure Front Door, Fastly)</td>
+            <td class="endpoint-cell"><code>wss://{c2-domain-behind-cdn}/</code></td>
+            <td class="abuse-cell">C2 behind CDN edge IPs; KEYPLUG (APT41) connects over WSS to Cloudflare edge addresses; V2Ray/Xray WS+TLS+CDN uses the same pattern <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Hugging Face Spaces</td>
+            <td class="endpoint-cell"><code>wss://{user}-{space}.hf.space/queue/join</code></td>
+            <td class="abuse-cell">Free Gradio/Docker Spaces on <code>hf.space</code> as a hosted WebSocket server; HF is already documented as a malware payload host <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">AI realtime APIs (OpenAI Realtime, Gemini Live)</td>
+            <td class="endpoint-cell"><code>wss://api.openai.com/v1/realtime, wss://generativelanguage.googleapis.com/ws/...</code></td>
+            <td class="abuse-cell">LLM provider sockets as camouflage, and the model as a relay or decision layer; precedent: the SesameOp backdoor used the OpenAI Assistants API (HTTPS) as its C2 relay (Microsoft DART, 2025) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Hosted headless browsers (Browserless, Browserbase)</td>
+            <td class="endpoint-cell"><code>wss://{provider}/?token={key}</code></td>
+            <td class="abuse-cell">Chrome DevTools Protocol over WSS to a vendor browser = remote egress and scraping proxy that originates from the vendor's IPs <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Hasura Cloud / generic GraphQL subscriptions (<code>graphql-ws</code> protocol)</td>
             <td class="endpoint-cell"><code>wss://{host}/v1/graphql</code></td>
             <td class="abuse-cell">Subscription payloads as covert channel <span class="dir-tag">(INT→EXT)</span></td>
@@ -678,6 +726,12 @@
             <td class="endpoint-cell"><code>wss://socket.*</code></td>
             <td class="abuse-cell">Financial WS APIs as camouflage <span class="dir-tag">(INT→EXT)</span></td>
             <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Blockchain RPC subscriptions (Ethereum/BSC/Solana)</td>
+            <td class="endpoint-cell"><code>wss://{rpc-provider}/ws/v3/{key}, wss://api.mainnet-beta.solana.com</code></td>
+            <td class="abuse-cell"><code>eth_subscribe</code> / <code>logsSubscribe</code> push contract events and memos to an implant; on-chain C2/payload storage is documented (EtherHiding, GlassWorm) over RPC, WS adds push tasking <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (RPC) / Concept (WS)</span></td>
         </tr>
         <tr>
             <td class="name-cell">wstunnel</td>
