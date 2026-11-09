@@ -362,6 +362,12 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Microsoft Dev Tunnels (<code>devtunnel</code> CLI)</td>
+            <td class="endpoint-cell"><code>wss://{id}-{port}.{region}.devtunnels.ms</code></td>
+            <td class="abuse-cell">Standalone CLI for the same relay as VS Code tunnels; anonymous-access tunnels publish internal ports on a Microsoft domain (consider merging with the VS Code Tunnels row) <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Gitpod / CodeSandbox / StackBlitz</td>
             <td class="endpoint-cell">workspace <code>wss://</code></td>
             <td class="abuse-cell">Dev workspaces as hosting/pivot <span class="dir-tag">(INT→EXT)</span></td>
@@ -704,6 +710,30 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">ligolo-ng</td>
+            <td class="endpoint-cell"><code>wss://{proxy}/</code></td>
+            <td class="abuse-cell">TUN-based pivoting agent with WebSocket transport; full layer-3 access into internal networks <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">reverse_ssh</td>
+            <td class="endpoint-cell"><code>--ws / --wss</code></td>
+            <td class="abuse-cell">Reverse SSH implant (shell, SFTP, port forwarding) with HTTP/WebSocket/TLS transports <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Stowaway</td>
+            <td class="endpoint-cell"><code>--up ws / --down ws</code></td>
+            <td class="abuse-cell">Multi-hop pivoting proxy; node-to-node links over TCP, HTTP or WS <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">V2Ray / Xray / sing-box</td>
+            <td class="endpoint-cell"><code>wss://{cdn-domain}/{path}</code></td>
+            <td class="abuse-cell">VMess/VLESS/Trojan over WebSocket+TLS behind a CDN: encrypted proxy egress that looks like ordinary CDN WebSocket traffic <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">websockify</td>
             <td class="endpoint-cell"><code>wss://</code></td>
             <td class="abuse-cell">Bridge any internal TCP service to the web <span class="dir-tag">(EXT)</span></td>
@@ -722,10 +752,22 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Other dev tunnels (localtunnel, Pinggy, zrok, LocalXpose, Tunnelmole)</td>
+            <td class="endpoint-cell"><code>wss://{sub}.loca.lt, wss://{sub}.a.pinggy.link, wss://{share}.share.zrok.io</code></td>
+            <td class="abuse-cell">Free inbound tunnels that pass WebSocket traffic; <code>loca.lt</code>-class domains are recurrent in phishing and payload hosting <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Tailscale DERP relays</td>
             <td class="endpoint-cell"><code>wss://derp.tailscale.com</code></td>
             <td class="abuse-cell">Encrypted relay egress (insider with tailnet access) <span class="dir-tag">(INT→EXT)</span></td>
             <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">WebRTC signalling (PeerJS cloud, WebTorrent WSS trackers)</td>
+            <td class="endpoint-cell"><code>wss://0.peerjs.com/peerjs, wss://tracker.openwebtorrent.com</code></td>
+            <td class="abuse-cell">Free public signalling servers broker WebRTC data channels; WebRTC is not governed by CSP <code>connect-src</code> (a WebRTC skimmer was reported by Sansec in 2026) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
         </tr>
         <tr>
             <td class="name-cell">Tor Snowflake</td>
