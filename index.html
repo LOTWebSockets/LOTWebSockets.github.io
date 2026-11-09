@@ -458,6 +458,42 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Docker Engine API</td>
+            <td class="endpoint-cell"><code>ws://{host}:2375/containers/{id}/attach/ws</code></td>
+            <td class="abuse-cell">Exposed Docker daemons are mass-exploited (cryptojacking); the attach/ws endpoint gives an interactive container stdio stream over WebSocket <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">HashiCorp Nomad</td>
+            <td class="endpoint-cell"><code>wss://{host}:4646/v1/client/allocation/{alloc}/exec</code></td>
+            <td class="abuse-cell"><code>nomad alloc exec</code> over WebSocket = shell in workloads on unauthenticated or token-leaked clusters <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Kubernetes Dashboard / Argo CD web terminal</td>
+            <td class="endpoint-cell"><code>wss://{host}/api/sockjs/..., wss://{argocd}/terminal?pod=...</code></td>
+            <td class="abuse-cell">Browser pod shells over WebSocket/SockJS on commonly exposed dashboards (exposed K8s Dashboards were used in early cryptojacking cases) <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">VMware ESXi / vCenter (WebMKS)</td>
+            <td class="endpoint-cell"><code>wss://{esxi}/ticket/{ticket}</code></td>
+            <td class="abuse-cell">VM console (keyboard/video) over WebSocket; access to hosts that lack in-guest monitoring <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">BMC HTML5 KVM (iDRAC, iLO, Supermicro, OpenBMC)</td>
+            <td class="endpoint-cell"><code>wss://{bmc}/kvm/0</code></td>
+            <td class="abuse-cell">Out-of-band KVM and virtual media over WebSocket, below the OS and outside EDR <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">IP-KVM appliances (PiKVM, TinyPilot, JetKVM, NanoKVM)</td>
+            <td class="endpoint-cell"><code>wss://{kvm}/api/ws, wss://{kvm}/...</code></td>
+            <td class="abuse-cell">Insider-planted KVMs on employer laptops: DPRK IT-worker "laptop farms" drove machines via PiKVM/TinyPilot (Microsoft, DOJ) <span class="dir-tag">(EXT→INT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">oVirt/OpenNebula</td>
             <td class="endpoint-cell">noVNC websockify paths</td>
             <td class="abuse-cell">VM console pivot <span class="dir-tag">(EXT)</span></td>
@@ -476,6 +512,12 @@
             <td><span class="status-badge status-documented">Documented</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Java WebSocket memory shells (Tomcat / Spring / Jetty)</td>
+            <td class="endpoint-cell"><code>ws(s)://{victim}/{random-path}</code></td>
+            <td class="abuse-cell">Webshell registered at runtime as a <code>javax.websocket</code> endpoint (no file on disk); public tooling (e.g. wsMemShell) and Godzilla/Behinder-style frameworks <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Unraid</td>
             <td class="endpoint-cell">webGUI WS</td>
             <td class="abuse-cell">Admin operations over WS <span class="dir-tag">(EXT)</span></td>
@@ -488,10 +530,46 @@
             <td><span class="status-badge status-concept">Concept</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Fortinet FortiOS / FortiProxy (CVE-2024-55591)</td>
+            <td class="endpoint-cell"><code>wss://{fortigate}/ws/cli/open</code></td>
+            <td class="abuse-cell">Crafted requests to the Node.js WebSocket module bypass authentication and yield super-admin CLI; exploited as a zero-day, CISA KEV <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Jenkins CLI over WebSocket</td>
+            <td class="endpoint-cell"><code>wss://{jenkins}/cli/ws</code></td>
+            <td class="abuse-cell">Remote CLI transport behind CVE-2024-23897 (arbitrary file read, KEV) and CVE-2024-23898 (cross-site WebSocket hijacking from a malicious page) <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Hosting panels (Webmin, aaPanel/BaoTa, 1Panel, Coolify)</td>
+            <td class="endpoint-cell"><code>wss://{host}:{port}/...</code></td>
+            <td class="abuse-cell">Root web terminals over WebSocket in frequently exposed panels with recurring auth-bypass CVEs <span class="dir-tag">(EXT)</span></td>
+            <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Traefik dashboard</td>
             <td class="endpoint-cell"><code>wss://{host}:8080/api</code></td>
             <td class="abuse-cell">Realtime API over WS <span class="dir-tag">(EXT)</span></td>
             <td><span class="status-badge status-poc">PoC</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">MeshCentral / MeshAgent</td>
+            <td class="endpoint-cell"><code>wss://{server}/agent.ashx</code></td>
+            <td class="abuse-cell">Open-source RMM whose agent holds a persistent WebSocket to an attacker-run server; repeatedly abused as a RAT (Ukrainian and Russian government targeting, post-CrushFTP exploitation) <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Tactical RMM</td>
+            <td class="endpoint-cell"><code>wss://{api}/natsws</code></td>
+            <td class="abuse-cell">Open-source RMM (bundles MeshCentral), commonly abused for persistence; agents use NATS over WebSocket on 443 <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (RMM abuse)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">RustDesk (self-hosted relay)</td>
+            <td class="endpoint-cell"><code>wss://{server}:21118, wss://{server}:21119</code></td>
+            <td class="abuse-cell">Heavily abused remote-desktop tool; self-hosted hbbs/hbbr expose WebSocket ports for web clients <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-documented">Documented (abuse) / PoC (WS)</span></td>
         </tr>
         <tr>
             <td class="name-cell">Uptime Kuma</td>
