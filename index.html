@@ -92,6 +92,12 @@
             <td><span class="status-badge status-poc">PoC</span></td>
         </tr>
         <tr>
+            <td class="name-cell">Pushbullet / Pushover (realtime streams)</td>
+            <td class="endpoint-cell"><code>wss://stream.pushbullet.com/websocket/{token}, wss://client.pushover.net/push</code></td>
+            <td class="abuse-cell">Free-tier push services with WebSocket clients; push = tasking, uploads/notes = exfil, same model as ntfy <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
             <td class="name-cell">Pipedream</td>
             <td class="endpoint-cell"><code>wss://ws.pipedream.net/{channel}</code></td>
             <td class="abuse-cell">Free relay; arbitrary channel names <span class="dir-tag">(INT→EXT)</span></td>
@@ -204,6 +210,36 @@
             <td class="endpoint-cell"><code>wss://web.whatsapp.com/ws</code></td>
             <td class="abuse-cell">Baileys-class libs; message channel + media exfil <span class="dir-tag">(INT→EXT)</span></td>
             <td><span class="status-badge status-unofficial">Unofficial/Documented (libs widely abused)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Telegram (MTProto over WebSocket)</td>
+            <td class="endpoint-cell"><code>wss://{dc-name}.web.telegram.org/apiws</code></td>
+            <td class="abuse-cell">Telegram is a heavily abused C2/exfil channel via the HTTPS Bot API; the official MTProto WebSocket transport used by Telegram Web and GramJS-class libraries lets an implant blend into <code>web.telegram.org</code> browser traffic <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-unofficial">Unofficial/Documented (Telegram C2)</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Nostr relays</td>
+            <td class="endpoint-cell"><code>wss://{relay}/</code></td>
+            <td class="abuse-cell">Thousands of public relays; throwaway keypairs, no accounts; signed events and encrypted DMs (NIP-04/NIP-17) usable as a decentralised pub/sub dead drop that survives takedown of any single relay <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">hack.chat</td>
+            <td class="endpoint-cell"><code>wss://hack.chat/chat-ws</code></td>
+            <td class="abuse-cell">Anonymous, account-less chat; any channel name creates a room on join = zero-setup rendezvous and command channel, pure WebSocket <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Fediverse / ATProto firehoses (Mastodon streaming, Bluesky Jetstream)</td>
+            <td class="endpoint-cell"><code>wss://{instance}/api/v1/streaming, wss://jetstream{n}.{region}.bsky.network/subscribe</code></td>
+            <td class="abuse-cell">Operator posts publicly (HTTPS); implant only <em>reads</em> a public stream filtered by account/DID = one-way tasking that never touches attacker infrastructure <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
+        </tr>
+        <tr>
+            <td class="name-cell">Live-chat widgets (Crisp, Tawk.to, Intercom, LiveChat, Zendesk)</td>
+            <td class="endpoint-cell"><code>wss://{vendor-realtime-host}/</code></td>
+            <td class="abuse-cell">Anonymous "website visitor" sessions on widely allow-listed SaaS chat; implant acts as a visitor and the operator as the agent = two-way channel <span class="dir-tag">(INT→EXT)</span></td>
+            <td><span class="status-badge status-concept">Concept</span></td>
         </tr>
         <tr>
             <td class="name-cell">Microsoft Teams / Zoom / Webex (Web SDKs)</td>
